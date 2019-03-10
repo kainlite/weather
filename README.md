@@ -1,5 +1,7 @@
 ### My custom weather service
 
+Some example API calls, or from where are we going to gather the weather information :)
+
 API: `https://twcservice.mybluemix.net/rest-api/`
 
 Search:
