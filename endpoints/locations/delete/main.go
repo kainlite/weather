@@ -27,7 +27,12 @@ func processRequest(c *gin.Context) {
 	fmt.Println("Delete")
 
 	location := weatherapi.DeleteLocation(c.Param("id"))
-	c.JSON(http.StatusCreated, location)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, nil)
+	} else {
+		return c.JSON(http.StatusNoContent, nil)
+	}
 }
 
 func main() {

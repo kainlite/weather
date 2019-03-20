@@ -1,5 +1,12 @@
 package weatherapi
 
+type Location struct {
+	Id         string `form:"id" json:"id" binding:"required"`
+	LocationId string `form:"location_id" json:"location_id" binding:"required"`
+	UserId     string `form:"user_id" json:"user_id" binding:"required"`
+	CreatedAt  string `form:"created_at" json:"created_at" binding:"required"`
+}
+
 // These structs were generated using:
 // https://mholt.github.io/json-to-go/
 

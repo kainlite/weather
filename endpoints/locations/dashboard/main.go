@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -27,7 +28,12 @@ func processRequest(c *gin.Context) {
 	fmt.Println("Dashboard")
 
 	locations := weatherapi.Dashboard()
-	c.JSON(http.StatusCreated, locations)
+
+	body, _ := json.Marshal(&ListLocationsResponse{
+		Locations: locations,
+	})
+
+	return c.JSON(http.StatusOK, body)
 }
 
 func main() {

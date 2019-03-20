@@ -7,11 +7,6 @@ import (
 	"os"
 )
 
-type Location struct {
-	LocationId string
-	UserId     string
-}
-
 // We are doing this while learning about the API
 // to save some requests
 func readJSONFile(name string, forecast interface{}) {
@@ -53,21 +48,4 @@ func PrintStats() {
 	for _, v := range daily.Forecasts {
 		fmt.Printf("Day: %s, Forecast: %s, Min: %d, Max: %f\n", v.Dow, v.Narrative, v.MinTemp, v.MaxTemp)
 	}
-}
-
-// TODO
-func CreateLocation(LocationId string, UserId string) Location {
-	return Location{}
-}
-
-func DeleteLocation(LocationId string) Location {
-	return Location{}
-}
-
-func SearchLocation(Name string) Location {
-	return Location{}
-}
-
-func Dashboard() []Location {
-	return []Location{}
 }

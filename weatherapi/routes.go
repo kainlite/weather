@@ -43,6 +43,7 @@ func respondWithError(code int, message string, c *gin.Context) {
 
 func authorizedHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// Later on we will implement cognito, meanwhile we will use this fake authorization
 		token := c.GetHeader("Authorization")
 
 		if token == "" {

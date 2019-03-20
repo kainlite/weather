@@ -27,7 +27,7 @@ func processRequest(c *gin.Context) {
 	fmt.Println("Search")
 
 	location := weatherapi.SearchLocation(c.Param("name"))
-	c.JSON(http.StatusCreated, location)
+	c.JSON(http.StatusCreated, nil)
 }
 
 func main() {
