@@ -10,12 +10,16 @@ build:
 	mv main bin/locations/create
 
 	env GOOS=linux go build -ldflags="-s -w" -o main endpoints/locations/search/main.go
-	zip bin/locations/delete.zip main
-	mv main bin/locations/delete
+	zip bin/locations/search.zip main
+	mv main bin/locations/search
 
 	env GOOS=linux go build -ldflags="-s -w" -o main endpoints/locations/delete/main.go
 	zip bin/locations/delete.zip main
 	mv main bin/locations/delete
+
+	env GOOS=linux go build -ldflags="-s -w" -o main endpoints/locations/dashboard/main.go
+	zip bin/locations/dashboard.zip main
+	mv main bin/locations/dashboard
 
 clean:
 	rm -rf ./bin ./vendor

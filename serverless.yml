@@ -54,3 +54,11 @@ functions:
           method: post
     environment:
       AUTHENTICATION_TOKEN: ${ssm:authentication}
+  LocationsDashboard:
+    handler: bin/locations/dashboard
+    events:
+      - http:
+          path: /locations/dashboard
+          method: get
+    environment:
+      AUTHENTICATION_TOKEN: ${ssm:authentication}

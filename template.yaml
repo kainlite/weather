@@ -51,3 +51,19 @@ Resources:
           Properties:
             Path: /locations/{id}
             Method: delete
+  LocationsDashboard:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main
+      CodeUri: ./bin/locations/dashboard.zip
+      Runtime: go1.x
+      Timeout: 30
+      Environment:
+        Variables:
+          AUTHENTICATION_TOKEN:
+      Events:
+        GetRates:
+          Type: Api
+          Properties:
+            Path: /locations/dashboard
+            Method: get

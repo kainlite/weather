@@ -67,3 +67,7 @@ func DeleteLocation(LocationId string) Location {
 func SearchLocation(Name string) Location {
 	return Location{}
 }
+
+func Dashboard() []Location {
+	return []Location{}
+}
