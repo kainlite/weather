@@ -46,3 +46,31 @@ Example response:
       "num": 1,
       "day_ind": "N",
 ```
+
+Example requests to our weatherapi:
+```
+curl -X POST \
+  http://localhost:3000/locations/create \
+  -H 'Authorization: Open sesame' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \  -d '{
+    "location_id": "Cacheuta", \
+    "user_id": "pepe@mail.com" \
+}'
+
+
+curl -X POST \
+  http://localhost:3000/locations/search \
+  -H 'Authorization: Open sesame' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Cacheuta",
+}'
+
+curl -X DELETE \
+  http://localhost:3000/locations/1 \
+  -H 'Authorization: Open sesame' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json'
+```

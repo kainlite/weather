@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description:
+  Weather advisor app
+Resources:
+  LocationsCreate:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main
+      CodeUri: ./bin/locations/create.zip
+      Runtime: go1.x
+      Timeout: 30
+      Environment:
+        Variables:
+          AUTHENTICATION_TOKEN:
+      Events:
+        GetRates:
+          Type: Api
+          Properties:
+            Path: /locations
+            Method: post
+  LocationsSearch:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main
+      CodeUri: ./bin/locations/search.zip
+      Runtime: go1.x
+      Timeout: 30
+      Environment:
+        Variables:
+          AUTHENTICATION_TOKEN:
+      Events:
+        GetRates:
+          Type: Api
+          Properties:
+            Path: /locations/search
+            Method: post
+  LocationsDelete:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main
+      CodeUri: ./bin/locations/delete.zip
+      Runtime: go1.x
+      Timeout: 30
+      Environment:
+        Variables:
+          AUTHENTICATION_TOKEN:
+      Events:
+        GetRates:
+          Type: Api
+          Properties:
+            Path: /locations/{id}
+            Method: delete

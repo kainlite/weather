@@ -1,4 +1,4 @@
-package main
+package weatherapi
 
 // These structs were generated using:
 // https://mholt.github.io/json-to-go/

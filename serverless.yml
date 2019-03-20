@@ -1,0 +1,56 @@
+service: weather
+
+plugins:
+  - serverless-log-forwarding
+
+custom:
+  # logForwarding:
+  #   destinationARN: <ARN OF FORWARDER>
+  #   filterPattern: "-\"RequestId: \""
+  stage: ${opt:stage, self:provider.stage}
+  appName: weather
+
+frameworkVersion: ">=1.28.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: dev
+  region: us-east-1
+  memorySize: 128
+  tags:
+    appName: ${self:custom.appName}
+    stage: ${self:custom.stage}
+    owner: kainlite
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+functions:
+  LocationsCreate:
+    handler: bin/locations/create
+    events:
+      - http:
+          path: /locations
+          method: post
+    environment:
+      AUTHENTICATION_TOKEN: ${ssm:authentication}
+  LocationsDelete:
+    handler: bin/locations/delete
+    events:
+      - http:
+          path: /locations/{id}
+          method: delete
+    environment:
+      AUTHENTICATION_TOKEN: ${ssm:authentication}
+  LocationsSearch:
+    handler: bin/subscriptions/search
+    events:
+      - http:
+          path: /locations/search
+          method: post
+    environment:
+      AUTHENTICATION_TOKEN: ${ssm:authentication}
