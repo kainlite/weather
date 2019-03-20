@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -23,6 +24,8 @@ func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 }
 
 func processRequest(c *gin.Context) {
+	fmt.Println("Delete")
+
 	location := weatherapi.DeleteLocation(c.Param("id"))
 	c.JSON(http.StatusCreated, location)
 }

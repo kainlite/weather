@@ -47,7 +47,7 @@ functions:
     environment:
       AUTHENTICATION_TOKEN: ${ssm:authentication}
   LocationsSearch:
-    handler: bin/subscriptions/search
+    handler: bin/locations/search
     events:
       - http:
           path: /locations/search

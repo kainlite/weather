@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -14,6 +15,7 @@ var initialized = false
 var ginLambda *ginadapter.GinLambda
 
 func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	fmt.Println("Create")
 	if !initialized {
 		ginEngine := weatherapi.MountAuthorizedRoute("/locations", "post", processRequest)
 		ginLambda = ginadapter.New(ginEngine)
@@ -28,6 +30,8 @@ type Input struct {
 }
 
 func processRequest(c *gin.Context) {
+	fmt.Println("Create")
+
 	var input Input
 	c.BindJSON(&input)
 	location := weatherapi.CreateLocation(input.LocationId, input.UserId)
@@ -35,5 +39,6 @@ func processRequest(c *gin.Context) {
 }
 
 func main() {
+	fmt.Println("Create")
 	lambda.Start(Handler)
 }

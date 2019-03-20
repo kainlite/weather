@@ -33,7 +33,7 @@ Resources:
         GetRates:
           Type: Api
           Properties:
-            Path: /locations/search
+            Path: /locations/search/{name}
             Method: post
   LocationsDelete:
     Type: AWS::Serverless::Function
