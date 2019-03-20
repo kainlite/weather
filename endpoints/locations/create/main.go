@@ -27,7 +27,7 @@ func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 func processRequest(c *gin.Context) {
 	fmt.Println("Create")
 
-	var input Location
+	var input weatherapi.Location
 	c.BindJSON(&input)
 	err, location := weatherapi.CreateLocation(input)
 

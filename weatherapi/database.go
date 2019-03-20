@@ -27,11 +27,11 @@ func init() {
 	}
 }
 
-func CreateLocation(location Location) (error, Location) {
+func CreateLocation(location weatherapi.Location) (error, weatherapi.Location) {
 	id := uuid.Must(uuid.NewV4(), nil).String()
 
 	// Initialize location
-	location := &Location{
+	location := &weatherapi.Location{
 		ID:         id,
 		UserId:     "todo",
 		LocationId: "ARBA0009:1:AR",
@@ -53,7 +53,7 @@ func CreateLocation(location Location) (error, Location) {
 	return err, location
 }
 
-func DeleteLocation(id string) (error, Location) {
+func DeleteLocation(id string) (error, weatherapi.Location) {
 	fmt.Println("DeleteLocation")
 
 	// Delete location
@@ -70,7 +70,7 @@ func DeleteLocation(id string) (error, Location) {
 	return err, location
 }
 
-func ListLocations() []Location {
+func ListLocations() []weatherapi.Location {
 	fmt.Println("ListLocations")
 
 	// Read from DynamoDB
@@ -80,9 +80,9 @@ func ListLocations() []Location {
 	result, _ := db.Scan(input)
 
 	// Construct locations from response
-	var locations []Location
+	var locations []weatherapi.Location
 	for _, i := range result.Items {
-		location := Location{}
+		location := weatherapi.Location{}
 		if err := dynamodbattribute.UnmarshalMap(i, &location); err != nil {
 			fmt.Println("Failed to unmarshal")
 			fmt.Println(err)
