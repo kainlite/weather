@@ -42,7 +42,7 @@ functions:
     handler: bin/locations/delete
     events:
       - http:
-          path: /locations/{id}
+          path: /locations
           method: delete
     environment:
       AUTHENTICATION_TOKEN: ${ssm:authentication}
@@ -54,11 +54,11 @@ functions:
           method: post
     environment:
       AUTHENTICATION_TOKEN: ${ssm:authentication}
-  LocationsDashboard:
-    handler: bin/locations/dashboard
+  LocationsList:
+    handler: bin/locations
     events:
       - http:
-          path: /locations/dashboard
+          path: /locations
           method: get
     environment:
       AUTHENTICATION_TOKEN: ${ssm:authentication}

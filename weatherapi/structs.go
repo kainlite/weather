@@ -7,6 +7,11 @@ type Location struct {
 	CreatedAt  string `form:"created_at" json:"created_at" binding:"required"`
 }
 
+type LocationKey struct {
+	UserId     string `json:"user_id"`
+	LocationId string `json:"location_id"`
+}
+
 // These structs were generated using:
 // https://mholt.github.io/json-to-go/
 

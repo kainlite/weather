@@ -17,9 +17,9 @@ build:
 	zip bin/locations/delete.zip main
 	mv main bin/locations/delete
 
-	env GOOS=linux go build -ldflags="-s -w" -o main endpoints/locations/dashboard/main.go
-	zip bin/locations/dashboard.zip main
-	mv main bin/locations/dashboard
+	env GOOS=linux go build -ldflags="-s -w" -o main endpoints/locations/list/main.go
+	zip bin/locations/list.zip main
+	mv main bin/locations/list
 
 clean:
 	rm -rf ./bin ./vendor

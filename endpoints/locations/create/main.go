@@ -32,6 +32,8 @@ func processRequest(c *gin.Context) {
 	err, location := weatherapi.CreateLocation(input)
 
 	if err != nil {
+		fmt.Println(err)
+
 		c.JSON(http.StatusInternalServerError, nil)
 	} else {
 		body, _ := json.Marshal(location)

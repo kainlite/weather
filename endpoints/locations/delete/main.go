@@ -16,7 +16,7 @@ var ginLambda *ginadapter.GinLambda
 
 func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if !initialized {
-		ginEngine := weatherapi.MountAuthorizedRoute("/locations/:id", "delete", processRequest)
+		ginEngine := weatherapi.MountAuthorizedRoute("/locations", "delete", processRequest)
 		ginLambda = ginadapter.New(ginEngine)
 		initialized = true
 	}
@@ -26,12 +26,16 @@ func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 func processRequest(c *gin.Context) {
 	fmt.Println("Delete")
 
-	location := weatherapi.DeleteLocation(c.Param("id"))
+	var locationkey weatherapi.LocationKey
+	c.BindJSON(&locationkey)
+
+	err := weatherapi.DeleteLocation(locationkey)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, nil)
+		errorMessage := fmt.Sprintf("Error: %s", err)
+		c.JSON(http.StatusInternalServerError, errorMessage)
 	} else {
-		return c.JSON(http.StatusNoContent, nil)
+		c.JSON(http.StatusOK, "{}")
 	}
 }
 

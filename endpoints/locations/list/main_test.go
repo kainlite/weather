@@ -9,7 +9,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Dashboard", func() {
+var _ = Describe("List", func() {
 	var (
 		response events.APIGatewayProxyResponse
 		request  events.APIGatewayProxyRequest

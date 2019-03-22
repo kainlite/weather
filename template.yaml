@@ -33,7 +33,7 @@ Resources:
         GetRates:
           Type: Api
           Properties:
-            Path: /locations/search/{name}
+            Path: /locations/search
             Method: post
   LocationsDelete:
     Type: AWS::Serverless::Function
@@ -49,13 +49,13 @@ Resources:
         GetRates:
           Type: Api
           Properties:
-            Path: /locations/{id}
+            Path: /locations
             Method: delete
-  LocationsDashboard:
+  LocationsList:
     Type: AWS::Serverless::Function
     Properties:
       Handler: main
-      CodeUri: ./bin/locations/dashboard.zip
+      CodeUri: ./bin/locations/list.zip
       Runtime: go1.x
       Timeout: 30
       Environment:
@@ -65,5 +65,5 @@ Resources:
         GetRates:
           Type: Api
           Properties:
-            Path: /locations/dashboard
+            Path: /locations
             Method: get

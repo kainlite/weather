@@ -11,12 +11,16 @@ import (
 	"github.com/kainlite/weather/weatherapi"
 )
 
+type SearchParams struct {
+	Name string `json:"name"`
+}
+
 var initialized = false
 var ginLambda *ginadapter.GinLambda
 
 func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if !initialized {
-		ginEngine := weatherapi.MountAuthorizedRoute("/locations/search", "search", processRequest)
+		ginEngine := weatherapi.MountAuthorizedRoute("/locations/search", "post", processRequest)
 		ginLambda = ginadapter.New(ginEngine)
 		initialized = true
 	}
@@ -26,8 +30,16 @@ func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 func processRequest(c *gin.Context) {
 	fmt.Println("Search")
 
-	location := weatherapi.SearchLocation(c.Param("name"))
-	c.JSON(http.StatusCreated, nil)
+	var params SearchParams
+	c.BindJSON(&params)
+
+	err, locations := weatherapi.SearchLocation(params.Name)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, nil)
+	} else {
+		c.JSON(http.StatusOK, locations)
+	}
 }
 
 func main() {

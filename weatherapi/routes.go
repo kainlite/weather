@@ -1,6 +1,7 @@
 package weatherapi
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,12 @@ func buildEngine() *gin.Engine {
 }
 
 func setMethodHandlerForGroup(method string, path string, fn gin.HandlerFunc, group *gin.RouterGroup) {
+	fmt.Printf("method: %+v, path: %+v, fn: %+v, group: %+v", method, path, fn, group)
 	switch method {
+	case "get":
+		{
+			group.GET(path, fn)
+		}
 	case "post":
 		{
 			group.POST(path, fn)

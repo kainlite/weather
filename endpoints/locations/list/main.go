@@ -17,7 +17,7 @@ var ginLambda *ginadapter.GinLambda
 
 func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if !initialized {
-		ginEngine := weatherapi.MountAuthorizedRoute("/locations/dashboard", "dashboard", processRequest)
+		ginEngine := weatherapi.MountAuthorizedRoute("/locations", "get", processRequest)
 		ginLambda = ginadapter.New(ginEngine)
 		initialized = true
 	}
@@ -25,15 +25,17 @@ func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 }
 
 func processRequest(c *gin.Context) {
-	fmt.Println("Dashboard")
+	fmt.Println("LocationsList")
 
-	locations := weatherapi.Dashboard()
+	err, locations := weatherapi.ListLocations("todo2")
 
-	body, _ := json.Marshal(&ListLocationsResponse{
-		Locations: locations,
-	})
+	body, _ := json.Marshal(locations)
 
-	return c.JSON(http.StatusOK, body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "{}")
+	} else {
+		c.JSON(http.StatusOK, body)
+	}
 }
 
 func main() {

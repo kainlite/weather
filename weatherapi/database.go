@@ -1,7 +1,6 @@
 package weatherapi
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -9,10 +8,11 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/satori/go.uuid"
 )
 
 var db *dynamodb.DynamoDB
-var tableName *aws.String
+var tableName string
 
 func init() {
 	region := "us-east-1"
@@ -27,68 +27,86 @@ func init() {
 	}
 }
 
-func CreateLocation(location weatherapi.Location) (error, weatherapi.Location) {
+func CreateLocation(inputLocation Location) (error, Location) {
 	id := uuid.Must(uuid.NewV4(), nil).String()
 
 	// Initialize location
-	location := &weatherapi.Location{
-		ID:         id,
-		UserId:     "todo",
-		LocationId: "ARBA0009:1:AR",
+	location := &Location{
+		Id:         id,
+		UserId:     inputLocation.UserId,
+		LocationId: inputLocation.LocationId,
 		CreatedAt:  time.Now().String(),
 	}
-
-	// Parse request body
-	json.Unmarshal([]byte(request.Body), location)
 
 	// Write to DynamoDB
 	item, _ := dynamodbattribute.MarshalMap(location)
 	input := &dynamodb.PutItemInput{
 		Item:      item,
-		TableName: tableName,
+		TableName: &tableName,
 	}
 
 	_, err := db.PutItem(input)
 
-	return err, location
+	return err, *location
 }
 
-func DeleteLocation(id string) (error, weatherapi.Location) {
+func DeleteLocation(locationkey LocationKey) error {
 	fmt.Println("DeleteLocation")
 
-	// Delete location
-	input := &dynamodb.DeleteItemInput{
-		Key: map[string]*dynamodb.AttributeValue{
-			"id": {
-				S: aws.String(id),
-			},
-		},
-		TableName: tableName,
-	}
-	_, err := db.DeleteItem(input)
+	key, err := dynamodbattribute.MarshalMap(LocationKey{
+		UserId:     locationkey.UserId,
+		LocationId: locationkey.LocationId,
+	})
 
-	return err, location
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	input := &dynamodb.DeleteItemInput{
+		Key:       key,
+		TableName: aws.String("Locations"),
+	}
+
+	_, err = db.DeleteItem(input)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	return err
 }
 
-func ListLocations() []weatherapi.Location {
+func ListLocations(userId string) (error, []Location) {
 	fmt.Println("ListLocations")
+
+	var err error
 
 	// Read from DynamoDB
 	input := &dynamodb.ScanInput{
-		TableName: tableName,
+		TableName: &tableName,
 	}
 	result, _ := db.Scan(input)
 
 	// Construct locations from response
-	var locations []weatherapi.Location
+	var locations []Location
 	for _, i := range result.Items {
-		location := weatherapi.Location{}
+		location := Location{}
 		if err := dynamodbattribute.UnmarshalMap(i, &location); err != nil {
 			fmt.Println("Failed to unmarshal")
 			fmt.Println(err)
 		}
+		fmt.Printf("%+v", location)
 		locations = append(locations, location)
 	}
 
-	return locations
+	return err, locations
+}
+
+func SearchLocation(name string) (error, []Location) {
+	// TODO: Query external endpoints for ids
+	var locations []Location
+	readJSONFile("example_search.json", &locations)
+
+	return nil, locations
 }
